@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>D Facility | Quality Bricks & Building Materials Delivered</title>
+ <script src="https://cdn.tailwindcss.com"></script>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+ <script>
+ tailwind.config = {
+ theme: {
+ extend: {
+ fontFamily: {
+ sans: ['Inter', 'sans-serif'],
+ serif: ['Playfair Display', 'serif'],
+ },
+ colors: {
+ soil: '#8B4513',
+ clay: '#D2691E',
+ cement: '#95a5a6',
+ earth: '#5D4E37',
+ sand: '#C2B280',
+ truck: '#2C3E50',
+ }
+ }
+ }
+ }
+ </script>
+ <style>
+ .hero-bg {
+ background: linear-gradient(135deg, rgba(139, 69, 19, 0.92) 0%, rgba(93, 78, 55, 0.9) 100%),
+ url('images/owner.jpg') center/cover;
+ }
+ .texture-bg {
+ background-color: #f5f5f4;
+ background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4d4d8' fill-opacity='0.2'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+ }
+ .scroll-reveal {
+ opacity: 0;
+ transform: translateY(30px);
+ transition: all 0.8s ease-out;
+ }
+ .scroll-reveal.active {
+ opacity: 1;
+ transform: translateY(0);
+ }
+ .pricing-card:hover {
+ transform: translateY(-10px);
+ box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+ }
+ .cart-sidebar {
+ transform: translateX(100%);
+ transition: transform 0.3s ease;
+ }
+ .cart-sidebar.open {
+ transform: translateX(0);
+ }
+ .truck-animation {
+ animation: bounce 2s infinite;
+ }
+ @keyframes bounce {
+ 0%, 100% { transform: translateY(0); }
+ 50% { transform: translateY(-5px); }
+ }
+ .hero-truck {
+ background: linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.3)), 
+ url('images/truck.jpg');
+ background-size: cover;
+ background-position: center;
+ }
+ </style>
+</head>
+<body class="font-sans antialiased text-gray-800 bg-stone-50">
+
+ <!-- Navigation -->
+ <nav class="fixed w-full bg-white/95 backdrop-blur-md shadow-sm z-50 transition-all duration-300" id="navbar">
+ <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+ <div class="flex justify-between items-center h-20">
+ <div class="flex items-center space-x-3">
+ <div class="w-10 h-10 bg-soil rounded-lg flex items-center justify-center text-white">
+ <i class="fas fa-truck"></i>
+ </div>
+ <div>
+ <h1 class="text-xl font-serif font-bold text-earth tracking-tight">D Facility</h1>
+ <p class="text-xs text-clay font-semibold tracking-wider">BRICKS & BUILDING SUPPLIES</p>
+ </div>
+ </div>
+ 
+ <div class="hidden md:flex items-center space-x-8">
+ <a href="#about" class="text-gray-700 hover:text-soil font-medium transition">About</a>
+ <a href="#products" class="text-gray-700 hover:text-soil font-medium transition">Materials</a>
+ <a href="#delivery" class="text-gray-700 hover:text-soil font-medium transition">Delivery</a>
+ <a href="#calculator" class="text-gray-700 hover:text-soil font-medium transition">Calculator</a>
+ <a href="#contact" class="text-gray-700 hover:text-soil font-medium transition">Contact</a>
+ 
+ <button onclick="toggleCart()" class="relative bg-soil text-white px-6 py-2 rounded-full font-semibold hover:bg-earth transition flex items-center space-x-2">
+ <i class="fas fa-clipboard-list"></i>
+ <span>Get Quote</span>
+ <span id="cart-count" class="absolute -top-2 -right-2 bg-clay text-white text-xs w-6 h-6 rounded-full flex items-center justify-center hidden">0</span>
+ </button>
+ </div>
+
+ <button class="md:hidden text-2xl text-earth" onclick="toggleMobileMenu()">
+ <i class="fas fa-bars"></i>
+ </button>
+ </div>
+ </div>
+ 
+ <!-- Mobile Menu -->
+ <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+ <div class="px-4 py-2 space-y-2">
+ <a href="#about" class="block py-2 text-gray-700">About</a>
+ <a href="#products" class="block py-2 text-gray-700">Materials</a>
+ <a href="#delivery" class="block py-2 text-gray-700">Delivery</a>
+ <a href="#contact" class="block py-2 text-gray-700">Contact</a>
+ </div>
+ </div>
+ </nav>
+
+ <!-- Cart Sidebar -->
+ <div id="cart-sidebar" class="cart-sidebar fixed inset-y-0 right-0 w-full md:w-96 bg-white shadow-2xl z-50 p-6 overflow-y-auto">
+ <div class="flex justify-between items-center mb-6 border-b pb-4">
+ <h3 class="text-2xl font-serif font-bold text-earth">Quote Request</h3>
+ <button onclick="toggleCart()" class="text-gray-500 hover:text-red-500 text-2xl">
+ <i class="fas fa-times"></i>
+ </button>
+ </div>
+ <div id="cart-items" class="space-y-4 mb-6">
+ <p class="text-gray-500 italic">No items selected. Add materials for a quote.</p>
+ </div>
+ <div class="border-t pt-4 space-y-4">
+ <div class="flex justify-between text-lg font-bold text-earth">
+ <span>Subtotal:</span>
+ <span id="cart-total">R0.00</span>
+ </div>
+ <button onclick="submitQuote()" class="w-full bg-soil text-white py-3 rounded-lg font-semibold hover:bg-earth transition flex items-center justify-center space-x-2">
+ <i class="fab fa-whatsapp text-xl"></i>
+ <span>Send Quote via WhatsApp</span>
+ </button>
+ <p class="text-xs text-gray-500 text-center">We will confirm delivery fees based on your location</p>
+ </div>
+ </div>
+ <div id="cart-overlay" class="fixed inset-0 bg-black/50 z-40 hidden" onclick="toggleCart()"></div>
+
+ <!-- Hero Section -->
+ <section class="hero-bg min-h-screen flex items-center pt-20 relative">
+ <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+ <div class="grid md:grid-cols-2 gap-12 items-center">
+ <div class="text-white space-y-6 scroll-reveal">
+ <div class="inline-block bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full border border-white/30">
+ <span class="text-sm font-semibold tracking-wider">🚛 WE DELIVER TO RURAL AREAS</span>
+ </div>
+ <h2 class="text-5xl md:text-6xl font-serif font-bold leading-tight">
+ Building Dreams<br>
+ <span class="text-sand">Brick by Brick</span><br>
+ Across KwaZulu-Natal
+ </h2>
+ <p class="text-xl text-gray-200 max-w-lg leading-relaxed">Quality cement bricks at <strong class="text-sand text-2xl">R11 each</strong> delivered directly to your site. 
+ From our truck to your foundation—no transport hassles.
+ </p>
+ <div class="flex flex-col sm:flex-row gap-4 pt-4">
+ <a href="#products" class="inline-flex items-center justify-center px-8 py-4 bg-sand text-earth font-bold rounded-lg hover:bg-white transition transform hover:scale-105">
+ <i class="fas fa-cube mr-2"></i> View Materials
+ </a>
+ <a href="https://wa.me/27832320367" class="inline-flex items-center justify-center px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-lg hover:bg-white/10 transition">
+ <i class="fab fa-whatsapp mr-2"></i> WhatsApp Order
+ </a>
+ </div>
+ <div class="flex items-center space-x-6 pt-6 text-sm text-gray-300 bg-black/20 p-4 rounded-lg backdrop-blur-sm inline-flex">
+ <div class="flex items-center">
+ <i class="fas fa-check-circle mr-2 text-sand"></i>
+ <span>R11/brick delivered</span>
+ </div>
+ <div class="w-px h-4 bg-white/30"></div>
+ <div class="flex items-center">
+ <i class="fas fa-truck mr-2 text-sand"></i>
+ <span>Own fleet</span>
+ </div>
+ <div class="w-px h-4 bg-white/30"></div>
+ <div class="flex items-center">
+ <i class="fas fa-map-marker-alt mr-2 text-sand"></i>
+ <span>Rural specialists</span>
+ </div>
+ </div>
+ </div>
+ 
+ <div class="hidden md:block relative scroll-reveal">
+ <div class="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white/20">
+ <img src="images/truck.jpg" alt="Delivery Truck" class="w-full h-auto object-cover">
+ <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+ <p class="text-white font-bold text-lg">Nissan Diesel Fleet</p>
+ <p class="text-gray-300 text-sm">Reliable delivery to your site</p>
+ </div>
+ </div>
+ <div class="absolute -bottom-6 -right-6 bg-white p-4 rounded-lg shadow-xl max-w-xs">
+ <div class="flex items-center space-x-3">
+ <div class="bg-green-100 p-3 rounded-full">
+ <i class="fas fa-phone-alt text-green-600 text-xl"></i>
+ </div>
+ <div>
+ <p class="font-bold text-earth">Call or WhatsApp</p>
+ <p class="text-sm text-gray-600">083 232 0367</p>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </section>
+
+ <!-- Owner Profile Section -->
+ <section id="about" class="py-20 bg-white">
+ <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+ <div class="grid md:grid-cols-2 gap-12 items-center">
+ <div class="relative scroll-reveal order-2 md:order-1">
+ <div class="grid grid-cols-2 gap-4">
+ <div class="space-y-4">
+ <img src="images/owner.jpg" alt="Owner Portrait" class="rounded-2xl shadow-lg w-full h-64 object-cover transform translate-y-8">
+ </div>
+ <div class="space-y-4">
+ <img src="images/site.jpg" alt="On Site" class="rounded-2xl shadow-lg w-full h-64 object-cover">
+ <div class="bg-soil text-white p-6 rounded-2xl shadow-lg">
+ <p class="text-3xl font-bold">R11</p>
+ <p class="text-sm opacity-90">Per Brick<br>Delivered</p>
+ </div>
+ </div>
+ </div>
+ </div>
+ 
+ <div class="space-y-6 scroll-reveal order-1 md:order-2">
+ <div class="inline-flex items-center space-x-2 text-clay font-semibold">
+ <span class="w-12 h-px bg-clay"></span>
+ <span>MEET THE OWNER</span>
+ </div>
+ <h2 class="text-4xl font-serif font-bold text-earth">Thami Nyawo</h2>
+ <p class="text-xl text-gray-600 leading-relaxed italic border-l-4 border-sand pl-4">
+ "I don't just sell bricks—I deliver hope. When you buy from me, you get quality materials 
+ AND the peace of mind that they'll arrive on time, every time, right to your building site."
+ </p>
+ 
+ <div class="space-y-4 text-gray-600">
+ <p>
+ Based in Pietermaritzburg, Thami has built a reputation for reliability in rural 
+ building material supply. With his own fleet of trucks including a <strong>Nissan Diesel</strong>, 
+ he ensures that distance is never a barrier to quality construction.
+ </p>
+ <p>
+ Whether you're building a family home, extending your property, or working on a community project, 
+ he understands the unique challenges of rural construction—and solves them.
+ </p>
+ </div>
+ 
+ <div class="grid grid-cols-3 gap-4 pt-6">
+ <div class="text-center p-4 bg-stone-50 rounded-xl border border-stone-200">
+ <i class="fas fa-truck text-3xl text-soil mb-2"></i>
+ <p class="text-lg font-bold text-earth">Own Fleet</p>
+ <p class="text-xs text-gray-600">Direct delivery</p>
+ </div>
+ <div class="text-center p-4 bg-stone-50 rounded-xl border border-stone-200">
+ <i class="fas fa-hard-hat text-3xl text-soil mb-2"></i>
+ <p class="text-lg font-bold text-earth">Site Delivery</p>
+ <p class="text-xs text-gray-600">We offload for you</p>
+ </div>
+ <div class="text-center p-4 bg-stone-50 rounded-xl border border-stone-200">
+ <i class="fas fa-handshake text-3xl text-soil mb-2"></i>
+ <p class="text-lg font-bold text-earth">Flexible</p>
+ <p class="text-xs text-gray-600">Payment plans</p>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </section>
+
+ <!-- Operations Gallery -->
+ <section class="py-16 bg-earth text-white">
+ <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+ <div class="text-center mb-12 scroll-reveal">
+ <h2 class="text-3xl font-serif font-bold mb-4">From Yard to Site</h2>
+ <p class="text-gray-300">We handle the heavy lifting so you can focus on building</p></div>
+ 
+ <div class="grid md:grid-cols-3 gap-6">
+ <div class="relative group overflow-hidden rounded-2xl scroll-reveal">
+ <img src="images/truck.jpg" alt="Fleet" class="w-full h-64 object-cover transition transform group-hover:scale-110">
+ <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
+ <div>
+ <h3 class="font-bold text-lg">Reliable Fleet</h3>
+ <p class="text-sm text-gray-300">Nissan Diesel trucks for all terrain</p>
+ </div>
+ </div>
+ </div>
+ 
+ <div class="relative group overflow-hidden rounded-2xl scroll-reveal">
+ <img src="images/site.jpg" alt="Delivery" class="w-full h-64 object-cover transition transform group-hover:scale-110">
+ <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
+ <div>
+ <h3 class="font-bold text-lg">Hands-On Service</h3>
+ <p class="text-sm text-gray-300">Personal oversight of every delivery</p>
+ </div>
+ </div>
+ </div>
+ 
+ <div class="relative group overflow-hidden rounded-2xl bg-stone-800 flex items-center justify-center">
+ <div class="text-center p-8">
+ <i class="fas fa-map-marked-alt text-6xl text-sand mb-4"></i>
+ <h3 class="font-bold text-lg mb-2">Coverage Area</h3>
+ <p class="text-gray-300 text-sm mb-4">Serving rural KwaZulu-Natal including:</p>
+ <ul class="text-left text-sm space-y-1 text-gray-400">
+ <li><i class="fas fa-check text-sand mr-2"></i>Pietermaritzburg</li>
+ <li><i class="fas fa-check text-sand mr-2"></i>Hilton</li>
+ <li><i class="fas fa-check text-sand mr-2"></i>Howick</li>
+ <li><i class="fas fa-check text-sand mr-2"></i>Surrounding villages</li>
+ </ul>
+ </div>
+ </div>
+ </div>
+ </div>
+ </section>
+
+ <!-- Products & Pricing -->
+ <section id="products" class="py-20 texture-bg">
+ <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+ <div class="text-center mb-16 scroll-reveal">
+ <h3 class="text-sm font-bold text-clay tracking-widest uppercase mb-2">Our Materials</h3>
+ <h2 class="text-4xl font-serif font-bold text-earth mb-4">Quality Guaranteed</h2>
+ <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+ All materials sourced from reputable manufacturers. We deliver directly to your construction site.
+ </p>
+ </div>
+
+ <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+ <!-- Cement Bricks -->
+ <div class="pricing-card bg-white rounded-2xl shadow-lg overflow-hidden scroll-reveal border border-gray-100">
+ <div class="h-48 bg-gradient-to-br from-soil to-earth flex items-center justify-center relative">
+ <i class="fas fa-cubes text-6xl text-white/30"></i>
+ <div class="absolute top-4 right-4 bg-sand text-earth text-xs font-bold px-3 py-1 rounded-full">BEST SELLER</div>
+ </div>
+ <div class="p-8">
+ <h3 class="text-2xl font-bold text-earth mb-2">Cement Stock Bricks</h3>
+ <p class="text-gray-600 mb-4">7 MPA strength cement bricks. Perfect for housing walls and extensions.</p>
+ <div class="flex items-baseline mb-6">
+ <span class="text-4xl font-bold text-soil">R11</span>
+ <span class="text-gray-600 ml-2">each (delivered)*</span>
+ </div>
+ 
+ <ul class="space-y-3 mb-8 text-gray-600 text-sm">
+ <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Size: 220mm x 110mm x 70mm</li>
+ <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> 7 MPA compressive strength</li>
+ <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> ~55 bricks per m² (single)</li>
+ <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Minimum order: 500 bricks</li>
+ <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Truck capacity: 5000 bricks</li>
+ </ul>
+ 
+ <button onclick="addToCart('Cement Stock Bricks', 11, '220x110x70mm', 1000)" 
+ class="w-full bg-soil text-white py-3 rounded-lg font-semibold hover:bg-earth transition flex items-center justify-center space-x-2">
+ <i class="fas fa-plus"></i>
+ <span>Add to Quote (1000)</span>
+ </button>
+ </div>
+ </div>
+
+ <!-- Maxi Bricks -->
+ <div class="pricing-card bg-white rounded-2xl shadow-lg overflow-hidden scroll-reveal border border-gray-100">
+ <div class="h-48 bg-gradient-to-br from-clay to-soil flex items-center justify-center">
+ <i class="fas fa-building text-6xl text-white/30"></i>
+ </div>
+ <div class="p-8">
+ <h3 class="text-2xl font-bold text-earth mb-2">Maxi Bricks (RDP)</h3>
+ <p class="text-gray-600 mb-4">Double-volume bricks. Save on cement and labor with larger size.</p>
+ 
+ <div class="flex items-baseline mb-6">
+ <span class="text-4xl font-bold text-soil">R3.50</span>
+ <span class="text-gray-600 ml-2">each (ex-factory)</span>
+ </div>
+ 
+ <ul class="space-y-3 mb-8 text-gray-600 text-sm">
+ <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Size: 290mm x 140mm x 90mm</li>
+ <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Single skin construction</li>
+ <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> ~35 bricks per m²</li>
+ <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> 30% cost saving per m²</li>
+ <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Delivery: R500 per load</li>
+ </ul>
+ 
+ <button onclick="addToCart('Maxi Bricks', 3.50, '290x140x90mm', 500)" 
+ class="w-full bg-soil text-white py-3 rounded-lg font-semibold hover:bg-earth transition flex items-center justify-center space-x-2">
+ <i class="fas fa-plus"></i>
+ <span>Add to Quote (500)</span>
+ </button>
+ </div>
+ </div>
+
+ <!-- Cement -->
+ <div class="pricing-card bg-white rounded-2xl shadow-lg overflow-hidden scroll-reveal border border-gray-100">
+ <div class="h-48 bg-gradient-to-br from-gray-400 to-gray-600 flex items-center justify-center">
+ <i class="fas fa-bag-shopping text-6xl text-white/30"></i>
+ </div>
+ <div class="p-8">
+ <h3 class="text-2xl font-bold text-earth mb-2">PPC Cement</h3>
+ <p class="text-gray-600 mb-4">32.5R and 42.5N cement for mixing and plastering. Delivered in full truck loads.</p>
+ 
+ <div class="flex items-baseline mb-6">
+ <span class="text-4xl font-bold text-soil">R85</span>
+ <span class="text-gray-600 ml-2">per 50kg bag*</span>
+ </div>
+ 
+ <ul class="space-y-3 mb-8 text-gray-600 text-sm">
+ <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> PPC Surebuild or equivalent</li>
+ <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> 32.5R for general use</li>
+ <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> 42.5N for structural</li>
+ <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> ~3 bags per 1000 bricks</li>
+ <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Truck carries 500 bags</li>
+ </ul>
+ 
+ <button onclick="addToCart('PPC Cement', 85, '50kg bag', 50)" 
+ class="w-full bg-soil text-white py-3 rounded-lg font-semibold hover:bg-earth transition flex items-center justify-center space-x-2">
+ <i class="fas fa-plus"></i>
+ <span>Add to Quote (50)</span>
+ </button>
+ </div>
+ </div>
+ </div>
+ 
+ <div class="mt-12 bg-white p-6 rounded-2xl shadow-md flex flex-col md:flex-row items-center justify-between gap-4 scroll-reveal">
+ <div class="flex items-center space-x-4">
+ <div class="bg-green-100 p-3 rounded-full">
+ <i class="fas fa-info text-green-600 text-xl"></i>
+ </div>
+ <div>
+ <h4 class="font-bold text-earth">Bulk Orders & Custom Pricing</h4>
+ <p class="text-gray-600 text-sm">Building more than one house? Need 10,000+ bricks? Contact us for contractor pricing.</p>
+ </div>
+ </div>
+ <a href="https://wa.me/27832320367" class="bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition whitespace-nowrap">
+ <i class="fab fa-whatsapp mr-2"></i>Discuss Bulk Order
+ </a>
+ </div>
+ </div>
+ </section>
+
+ <!-- Delivery Info -->
+ <section id="delivery" class="py-20 bg-white">
+ <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+ <div class="grid md:grid-cols-2 gap-12 items-center">
+ <div class="space-y-6 scroll-reveal">
+ <h3 class="text-sm font-bold text-clay tracking-widest uppercase">Logistics</h3>
+ <h2 class="text-4xl font-serif font-bold text-earth">We Deliver Where Others Won't</h2>
+ <p class="text-gray-600 leading-relaxed">
+ Rural roads? No street address? No problem. Our <strong>Nissan Diesel</strong> fleet is built for 
+ South African conditions. We deliver directly to your construction site, even if it's down a gravel road 
+ or in a remote village.
+ </p>
+ 
+ <div class="space-y-4">
+ <div class="flex items-start space-x-4 p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
+ <i class="fas fa-truck-loading text-green-600 text-xl mt-1"></i>
+ <div>
+ <h4 class="font-bold text-earth">Site Offloading Included</h4>
+ <p class="text-sm text-gray-600">We don't just drop at the gate—we offload exactly where you need the materials.</p>
+ </div>
+ </div>
+ 
+ <div class="flex items-start space-x-4 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+ <i class="fas fa-route text-blue-600 text-xl mt-1"></i>
+ <div>
+ <h4 class="font-bold text-earth">Flexible Scheduling</h4>
+ <p class="text-sm text-gray-600">We work around your project timeline. Early morning or weekend deliveries available.</p>
+ </div>
+ </div>
+ 
+ <div class="flex items-start space-x-4 p-4 bg-orange-50 rounded-lg border-l-4 border-orange-500">
+ <i class="fas fa-hand-holding-usd text-orange-600 text-xl mt-1"></i>
+ <div>
+ <h4 class="font-bold text-earth">Payment on Delivery</h4>
+ <p class="text-sm text-gray-600">Pay 50% to book, 50% on arrival. Cash or EFT accepted.</p>
+ </div>
+ </div>
+ </div>
+ </div>
+ 
+ <div class="relative scroll-reveal">
+ <img src="images/site.jpg" alt="Rural Delivery" class="rounded-2xl shadow-2xl w-full">
+ <div class="absolute -bottom-6 -left-6 bg-white p-6 rounded-xl shadow-xl max-w-xs hidden md:block">
+ <div class="flex items-center space-x-3 mb-3">
+ <div class="flex -space-x-2">
+ <div class="w-8 h-8 rounded-full bg-soil flex items-center justify-center text-white text-xs">JD</div>
+ <div class="w-8 h-8 rounded-full bg-clay flex items-center justify-center text-white text-xs">SM</div>
+ <div class="w-8 h-8 rounded-full bg-earth flex items-center justify-center text-white text-xs">TN</div>
+ </div>
+ <div class="text-sm text-gray-600">Happy builders</div>
+ </div>
+ <p class="text-sm text-gray-700 italic">"He delivered right to my site in Ncwane when other suppliers refused to come this far."</p>
+ </div>
+ </div>
+ </div>
+ </div>
+ </section>
+
+ <!-- Calculator -->
+ <section id="calculator" class="py-20 bg-earth text-white relative overflow-hidden">
+ <div class="absolute inset-0 opacity-10">
+ <img src="images/owner.jpg" class="w-full h-full object-cover">
+ </div>
+ <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+ <div class="text-center mb-12 scroll-reveal">
+ <h2 class="text-4xl font-serif font-bold mb-4">Brick Calculator</h2>
+ <p class="text-gray-300">Calculate exactly what you need for your project</p>
+ </div>
+ 
+ <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 shadow-2xl scroll-reveal border border-white/20">
+ <div class="grid md:grid-cols-2 gap-8">
+ <div class="space-y-6">
+ <div>
+ <label class="block text-sm font-semibold mb-2">What are you building?</label>
+ <select id="calc-type" class="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white focus:outline-none focus:ring-2 focus:ring-sand" onchange="calculateBricks()">
+ <option value="house-single">Single Room (Single skin)</option>
+ <option value="house-double">House (Double skin/cavity)</option>
+ <option value="wall">Boundary Wall</option>
+ <option value="extension">Extension/Room Addition</option>
+ </select>
+ </div>
+ <div class="grid grid-cols-2 gap-4">
+ <div>
+ <label class="block text-sm font-semibold mb-2">Length (m)</label>
+ <input type="number" id="calc-length" placeholder="e.g. 6" class="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sand" oninput="calculateBricks()">
+ </div>
+ <div>
+ <label class="block text-sm font-semibold mb-2">Height (m)</label>
+ <input type="number" id="calc-height" placeholder="e.g. 2.4" class="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sand" oninput="calculateBricks()">
+ </div>
+ </div>
+ <div>
+ <label class="block text-sm font-semibold mb-2">Number of walls/rooms</label>
+ <input type="number" id="calc-walls" value="4" min="1" class="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sand" oninput="calculateBricks()">
+ </div>
+ </div>
+ 
+ <div class="bg-white/10 rounded-xl p-6 flex flex-col justify-center items-center text-center space-y-6 border border-white/20">
+ <div>
+ <p class="text-sm text-gray-300 mb-1">Bricks Needed (with 10% waste)</p>
+ <p id="calc-result" class="text-5xl font-bold text-sand">0</p>
+ </div>
+ <div class="w-full h-px bg-white/20"></div>
+ <div>
+ <p class="text-sm text-gray-300 mb-1">Estimated Cost @ R11/brick</p>
+ <p id="calc-cost" class="text-3xl font-bold text-white">R0.00</p>
+ </div>
+ <div class="w-full space-y-2">
+ <button onclick="addCalculationToCart()" class="w-full bg-sand text-earth font-bold py-3 rounded-lg hover:bg-white transition">
+ Add to Quote
+ </button>
+ <a href="https://wa.me/27832320367?text=Hi, I calculated that I need approximately Bricks. Can you confirm pricing and delivery to Pietermaritzburg?" 
+ target="_blank"
+ class="w-full bg-green-500 text-white font-bold py-3 rounded-lg hover:bg-green-600 transition flex items-center justify-center space-x-2">
+ <i class="fab fa-whatsapp"></i>
+ <span>Ask on WhatsApp</span>
+ </a>
+ </div>
+ </div>
+ </div>
+ <div class="mt-6 text-xs text-gray-400 text-center">
+ *Includes 10% wastage. Single skin = 55 bricks/m², Double skin = 110 bricks/m². For maxi bricks (290x140x90mm), divide result by 1.6.
+ </div>
+ </div>
+ </section>
+
+ <!-- Contact -->
+ <section id="contact" class="py-20 bg-white">
+ <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+ <div class="grid md:grid-cols-2 gap-12">
+ <div class="space-y-8 scroll-reveal">
+ <div>
+ <h3 class="text-sm font-bold text-clay tracking-widest uppercase mb-2">Get In Touch</h3>
+ <h2 class="text-4xl font-serif font-bold text-earth mb-6">Let's Build Together</h2>
+ <p class="text-gray-600 text-lg">
+ Ready to order? Have questions about delivery to your area? 
+ Reach out directly—Thami personally manages all inquiries.
+ </p>
+ </div>
+ 
+ <div class="space-y-6">
+ <a href="https://wa.me/27832320367" class="flex items-center space-x-4 p-4 bg-green-50 rounded-xl hover:bg-green-100 transition group">
+ <div class="w-14 h-14 bg-green-500 rounded-full flex items-center justify-center text-white text-2xl group-hover:scale-110 transition">
+ <i class="fab fa-whatsapp"></i>
+ </div>
+ <div>
+ <p class="text-sm text-gray-500">WhatsApp (Fastest Response)</p>
+ <p class="text-xl font-bold text-earth">083 232 0367</p>
+ </div>
+ </a>
+ 
+ <div class="flex items-center space-x-4 p-4 bg-stone-50 rounded-xl">
+ <div class="w-14 h-14 bg-soil rounded-full flex items-center justify-center text-white text-2xl">
+ <i class="fas fa-phone"></i>
+ </div>
+ <div>
+ <p class="text-sm text-gray-500">Call Us</p>
+ <p class="text-xl font-bold text-earth">083 232 0367</p>
+ </div>
+ </div>
+ 
+ <div class="flex items-center space-x-4 p-4 bg-stone-50 rounded-xl">
+ <div class="w-14 h-14 bg-clay rounded-full flex items-center justify-center text-white text-2xl">
+ <i class="fas fa-map-marker-alt"></i>
+ </div>
+ <div>
+ <p class="text-sm text-gray-500">Operating From</p>
+ <p class="text-xl font-bold text-earth">Pietermaritzburg, KwaZulu-Natal</p>
+ </div>
+ </div>
+ 
+ <div class="flex items-center space-x-4 p-4 bg-stone-50 rounded-xl">
+ <div class="w-14 h-14 bg-earth rounded-full flex items-center justify-center text-white text-2xl">
+ <i class="fas fa-clock"></i>
+ </div>
+ <div>
+ <p class="text-sm text-gray-500">Working Hours</p>
+ <p class="text-xl font-bold text-earth">Mon-Sat: 07:00 - 18:00</p>
+ </div>
+ </div>
+ </div>
+ 
+ <div class="bg-sand/20 p-6 rounded-xl border border-sand/30">
+ <h4 class="font-bold text-earth mb-2"><i class="fas fa-lightbulb text-clay mr-2"></i>Pro Tip</h4>
+ <p class="text-gray-700 text-sm">
+ Save money by ordering bricks and cement together. One delivery fee covers both, 
+ and you'll have everything needed to start building immediately.
+ </p>
+ </div>
+ </div>
+ 
+ <div class="relative scroll-reveal">
+ <img src="images/owner.jpg" alt="Owner" class="rounded-2xl shadow-2xl w-full h-full object-cover">
+ <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-8 text-white">
+ <p class="text-lg font-bold">Thami Nyawo</p>
+ <p class="text-gray-300">Your Building Partner</p>
+ </div>
+ </div>
+ </div>
+ </div>
+ </section>
+
+ <!-- Footer -->
+ <footer class="bg-gray-900 text-gray-400 py-12">
+ <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+ <div class="grid md:grid-cols-4 gap-8 mb-8">
+ <div class="col-span-2">
+ <h4 class="text-white text-lg font-bold mb-4">D Facility</h4>
+ <p class="text-sm mb-4 max-w-md">
+ Supplying quality bricks and building materials to rural KwaZulu-Natal. 
+ Reliable delivery, fair pricing, and personal service you can count on.
+ </p>
+ <div class="flex space-x-4">
+ <a href="https://wa.me/27832320367" class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-white hover:bg-green-700 transition">
+ <i class="fab fa-whatsapp"></i>
+ </a>
+ <a href="#" class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700 transition">
+ <i class="fab fa-facebook-f"></i>
+ </a>
+ </div>
+ </div>
+ <div>
+ <h4 class="text-white font-semibold mb-4">Products</h4>
+ <ul class="space-y-2 text-sm">
+ <li><a href="#" class="hover:text-sand transition">Cement Stock Bricks</a></li>
+ <li><a href="#" class="hover:text-sand transition">Maxi Bricks</a></li>
+ <li><a href="#" class="hover:text-sand transition">PPC Cement</a></li>
+ <li><a href="#" class="hover:text-sand transition">Building Sand</a></li>
+ </ul>
+ </div>
+ <div>
+ <h4 class="text-white font-semibold mb-4">Service Areas</h4>
+ <ul class="space-y-2 text-sm">
+ <li>Pietermaritzburg</li>
+ <li>Hilton</li>
+ <li>Richmond</li>
+ <li>uMgungundlovu District</li>
+ </ul>
+ </div>
+ </div>
+ <div class="border-t border-gray-800 pt-8 text-center text-sm">
+ <p>&copy; 2025 D Facility. All rights reserved.</p>
+ <p class="mt-2">Proudly serving rural South Africa</p>
+ </div>
+ </div>
+ </footer>
+
+ <!-- Toast Notification -->
+ <div id="toast" class="fixed bottom-4 right-4 bg-soil text-white px-6 py-3 rounded-lg shadow-2xl transform translate-y-20 transition-transform duration-300 z-50 flex items-center space-x-2">
+ <i class="fas fa-check-circle"></i>
+ <span id="toast-message">Added to quote!</span>
+ </div>
+
+ <script>
+ // Cart functionality
+ let cart = [];
+ 
+ function toggleCart() {
+ document.getElementById('cart-sidebar').classList.toggle('open');
+ document.getElementById('cart-overlay').classList.toggle('hidden');
+ }
+ 
+ function addToCart(name, price, size, qty) {
+ const existing = cart.find(item => item.name === name);
+ if (existing) {
+ existing.qty += qty;
+ } else {
+ cart.push({ name, price, size, qty });
+ }
+ updateCart();
+ showToast(`${name} (${qty} units) added to quote`);
+ }
+ 
+ function updateCart() {
+ const cartItems = document.getElementById('cart-items');
+ const cartCount = document.getElementById('cart-count');
+ const cartTotal = document.getElementById('cart-total');
+ 
+ if (cart.length === 0) {
+ cartItems.innerHTML = '<p class="text-gray-500 italic">No items selected. Add materials for a quote.</p>';
+ cartCount.classList.add('hidden');
+ cartTotal.textContent = 'R0.00';
+ return;
+ }
+ 
+ let html = '';
+ let total = 0;
+ 
+ cart.forEach((item, index) => {
+ const itemTotal = item.price * item.qty;
+ total += itemTotal;
+ 
+ html += `
+ <div class="bg-gray-50 p-4 rounded-lg space-y-2">
+ <div class="flex justify-between items-start">
+ <div>
+ <p class="font-semibold text-earth">${item.name}</p>
+ <p class="text-xs text-gray-500">${item.size}</p>
+ </div>
+ <button onclick="removeFromCart(${index})" class="text-red-500 hover:text-red-700 text-sm">
+ <i class="fas fa-times"></i>
+ </button>
+ </div>
+ <div class="flex justify-between items-center text-sm">
+ <div class="flex items-center space-x-2">
+ <button onclick="updateQty(${index}, -100)" class="w-6 h-6 rounded bg-gray-200 hover:bg-gray-300">-</button>
+ <span class="font-mono">${item.qty}</span>
+ <button onclick="updateQty(${index}, 100)" class="w-6 h-6 rounded bg-gray-200 hover:bg-gray-300">+</button>
+ </div>
+ <span class="font-semibold text-soil">R${itemTotal.toLocaleString()}</span>
+ </div>
+ </div>
+ `;
+ });
+ 
+ cartItems.innerHTML = html;
+ cartCount.textContent = cart.length;
+ cartCount.classList.remove('hidden');
+ cartTotal.textContent = 'R' + total.toLocaleString();
+ }
+ 
+ function updateQty(index, change) {
+ const newQty = cart[index].qty + change;
+ if (newQty >= 100) {
+ cart[index].qty = newQty;
+ updateCart();
+ }
+ }
+ 
+ function removeFromCart(index) {
+ cart.splice(index, 1);
+ updateCart();
+ }
+ 
+ function addCalculationToCart() {
+ const result = document.getElementById('calc-result').textContent;
+ if (result === '0') {
+ showToast('Please calculate first');
+ return;
+ }
+ addToCart('Calculated Brick Order', 11, 'Standard cement bricks', parseInt(result.replace(/,/g, '')));
+ toggleCart();
+ }
+ 
+ function submitQuote() {
+ if (cart.length === 0) {
+ showToast('Please add items to cart first');
+ return;
+ }
+ let message = 'Hi, I would like a quote for the following materials:\n\n';
+ cart.forEach(item => {
+ message += `- ${item.name}: ${item.qty} units @ R${item.price} = R${(item.price * item.qty).toLocaleString()}\n`;
+ });
+ message += '\nSubtotal: ' + document.getElementById('cart-total').textContent + '\n\nPlease advise on delivery to Pietermaritzburg.';
+ 
+ window.open(`https://wa.me/27832320367?text=${encodeURIComponent(message)}`, '_blank');
+ }
+ 
+ function showToast(msg) {
+ const toast = document.getElementById('toast');
+ document.getElementById('toast-message').textContent = msg;
+ toast.classList.remove('translate-y-20');
+ setTimeout(() => toast.classList.add('translate-y-20'), 3000);
+ }
+ 
+ // Calculator
+ function calculateBricks() {
+ const type = document.getElementById('calc-type').value;
+ const length = parseFloat(document.getElementById('calc-length').value) || 0;
+ const height = parseFloat(document.getElementById('calc-height').value) || 0;
+ const walls = parseInt(document.getElementById('calc-walls').value) || 1;
+ 
+ let perSqm = 55;
+ 
+ if (type === 'house-double') perSqm = 110;
+ else if (type === 'wall') perSqm = 55;
+ else if (type === 'extension') perSqm = 55;
+ 
+ const area = length * height * walls;
+ const bricks = Math.ceil(area * perSqm * 1.1);
+ const cost = bricks * 11;
+ 
+ document.getElementById('calc-result').textContent = bricks.toLocaleString();
+ document.getElementById('calc-cost').textContent = 'R' + cost.toLocaleString() + '.00';
+ }
+ 
+ // Scroll reveal
+ const observerOptions = {
+ threshold: 0.1,
+ rootMargin: '0px 0px -50px 0px'
+ };
+ 
+ const observer = new IntersectionObserver((entries) => {
+ entries.forEach(entry => {
+ if (entry.isIntersecting) {
+ entry.target.classList.add('active');
+ }
+ });
+ }, observerOptions);
+ 
+ document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+ 
+ // Navbar scroll effect
+ window.addEventListener('scroll', () => {
+ const nav = document.getElementById('navbar');
+ if (window.scrollY > 50) {
+ nav.classList.add('shadow-md');
+ } else {
+ nav.classList.remove('shadow-md');
+ }
+ });
+ 
+ function toggleMobileMenu() {
+ document.getElementById('mobile-menu').classList.toggle('hidden');
+ }
+ 
+ // Initialize
+ calculateBricks();
+ </script>
+</body>
+</html>
